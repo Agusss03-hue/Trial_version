@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Menu Perhitungan</title>
 <style>
-  /* Reset */
   * {
     box-sizing: border-box;
   }
@@ -19,14 +18,8 @@
     justify-content: center;
     align-items: center;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
   }
-
-  /* Container menu utama vertikal tengah layar */
   #menuUtama {
     display: flex;
     flex-direction: column;
@@ -35,16 +28,13 @@
     max-width: 200px;
     width: 100%;
   }
-  /* Menu item: icon besar dan teks kecil vertikal */
   .menu-item {
     width: 160px;
     display: flex;
     flex-direction: column;
     align-items: center;
     cursor: pointer;
-    outline: none;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
-    user-select: none;
   }
   .menu-item:focus,
   .menu-item:hover {
@@ -52,24 +42,18 @@
     box-shadow: 0 8px 16px rgba(0,0,0,0.15);
     border-radius: 20px;
   }
-  /* Icon ukuran besar seperti aplikasi hp */
   .menu-icon {
     width: 96px;
     height: 96px;
     fill: #2980b9;
     margin-bottom: 10px;
-    flex-shrink: 0;
   }
-  /* Teks kecil dan tengah */
   .menu-text {
     font-size: 16px;
     font-weight: 700;
     text-align: center;
     color: #004085;
-    user-select: none;
   }
-
-  /* Slide menu dari kiri */
   #slideMenu {
     position: fixed;
     top: 0;
@@ -101,7 +85,6 @@
     padding: 0 20px;
     flex-grow: 1;
     overflow-y: auto;
-    user-select: none;
   }
   #slideOptions li {
     padding: 14px 12px;
@@ -110,7 +93,6 @@
     font-weight: 600;
     color: #0062cc;
     transition: background-color 0.2s ease;
-    user-select: none;
   }
   #slideOptions li:hover,
   #slideOptions li:focus {
@@ -126,7 +108,6 @@
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    user-select: none;
     transition: background-color 0.3s ease;
   }
   #btnBack:hover,
@@ -134,11 +115,9 @@
     background: #0056b3;
     outline: none;
   }
-  /* Enable select on inputs/buttons */
   input, select, textarea, button {
     user-select: text;
   }
-  /* Scrollbar for slideOptions */
   #slideOptions::-webkit-scrollbar {
     width: 6px;
   }
@@ -150,37 +129,37 @@
 </head>
 <body>
 
-  <div id="menuUtama" role="menu" aria-label="Menu Utama">
-    <div class="menu-item" data-feature="Perhitungan Bahan" tabindex="0" role="menuitem" aria-haspopup="true" aria-controls="slideMenu">
-      <svg class="menu-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-        <rect x="6" y="8" width="40" height="8" rx="1.5"/>
-        <rect x="6" y="22" width="40" height="8" rx="1.5"/>
-        <rect x="6" y="36" width="40" height="8" rx="1.5"/>
-        <path d="M48 8 L54 8 L54 44 L48 44 Z" fill="none" stroke="#2980b9" stroke-width="2"/>
-        <path d="M51 8 L51 44" stroke="#2980b9" stroke-width="1" stroke-dasharray="2 4"/>
-      </svg>
-      <div class="menu-text">Perhitungan Bahan</div>
-    </div>
-
-    <div class="menu-item" data-feature="Perhitungan RAB" tabindex="0" role="menuitem" aria-haspopup="true" aria-controls="slideMenu">
-      <svg class="menu-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-        <circle cx="26" cy="32" r="18" fill="#2980b9" opacity="0.2" />
-        <circle cx="26" cy="32" r="14" fill="none" stroke="#2980b9" stroke-width="2"/>
-        <text x="26" y="38" text-anchor="middle" font-size="18" fill="#2980b9" font-weight="bold">$</text>
-        <rect x="36" y="12" width="20" height="40" rx="3" fill="none" stroke="#2980b9" stroke-width="2"/>
-        <line x1="42" y1="18" x2="54" y2="18" stroke="#2980b9" stroke-width="1.5"/>
-        <line x1="42" y1="26" x2="54" y2="26" stroke="#2980b9" stroke-width="1.5"/>
-        <line x1="42" y1="34" x2="54" y2="34" stroke="#2980b9" stroke-width="1.5"/>
-      </svg>
-      <div class="menu-text">Perhitungan RAB</div>
-    </div>
+<div id="menuUtama" role="menu" aria-label="Menu Utama">
+  <div class="menu-item" data-feature="Perhitungan Bahan" tabindex="0" role="menuitem">
+    <svg class="menu-icon" viewBox="0 0 64 64" aria-hidden="true">
+      <rect x="6" y="8" width="40" height="8" rx="1.5"/>
+      <rect x="6" y="22" width="40" height="8" rx="1.5"/>
+      <rect x="6" y="36" width="40" height="8" rx="1.5"/>
+      <path d="M48 8 L54 8 L54 44 L48 44 Z" fill="none" stroke="#2980b9" stroke-width="2"/>
+      <path d="M51 8 L51 44" stroke="#2980b9" stroke-width="1" stroke-dasharray="2 4"/>
+    </svg>
+    <div class="menu-text">Perhitungan Bahan</div>
   </div>
 
-  <nav id="slideMenu" aria-label="Submenu">
-    <h2 id="slideTitle">Menu</h2>
-    <ul id="slideOptions" tabindex="0"></ul>
-    <button id="btnBack" type="button">Kembali</button>
-  </nav>
+  <div class="menu-item" data-feature="Perhitungan RAB" tabindex="0" role="menuitem">
+    <svg class="menu-icon" viewBox="0 0 64 64" aria-hidden="true">
+      <circle cx="26" cy="32" r="18" fill="#2980b9" opacity="0.2" />
+      <circle cx="26" cy="32" r="14" fill="none" stroke="#2980b9" stroke-width="2"/>
+      <text x="26" y="38" text-anchor="middle" font-size="18" fill="#2980b9" font-weight="bold">$</text>
+      <rect x="36" y="12" width="20" height="40" rx="3" fill="none" stroke="#2980b9" stroke-width="2"/>
+      <line x1="42" y1="18" x2="54" y2="18" stroke="#2980b9" stroke-width="1.5"/>
+      <line x1="42" y1="26" x2="54" y2="26" stroke="#2980b9" stroke-width="1.5"/>
+      <line x1="42" y1="34" x2="54" y2="34" stroke="#2980b9" stroke-width="1.5"/>
+    </svg>
+    <div class="menu-text">Perhitungan RAB</div>
+  </div>
+</div>
+
+<nav id="slideMenu" aria-label="Submenu">
+  <h2 id="slideTitle">Menu</h2>
+  <ul id="slideOptions" tabindex="0"></ul>
+  <button id="btnBack" type="button">Kembali</button>
+</nav>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -221,22 +200,23 @@ document.addEventListener('DOMContentLoaded', function () {
       li.textContent = item;
       li.tabIndex = 0;
       li.onclick = () => {
-        if(fitur === "Perhitungan RAB") {
-          // Langsung blokir akses dan minta upgrade
+        if (fitur === "Perhitungan RAB") {
           alert("⚠️ Fitur ini tersedia hanya di versi premium. Silakan kunjungi lynk.id/bangunku untuk upgrade. Terima kasih!");
           return;
         }
 
-        // Batasi akses trial maksimal 2 kali per submenu Perhitungan Bahan
-        const trialLimit = 2;
-        const aksesKey = 'akses_' + item.replace(/\s+/g, '_');
-
-        let count = parseInt(localStorage.getItem(aksesKey)) || 0;
-        if (count >= trialLimit) {
-          alert("⚠️ Akses trial untuk fitur ini sudah habis. Silakan upgrade ke versi premium di lynk.id/bangunku.");
-          return;
+        // Admin bypass dengan ?mode=dev
+        const isDev = new URLSearchParams(window.location.search).get("mode") === "dev";
+        if (!isDev) {
+          const trialLimit = 5;
+          const aksesKey = 'akses_' + item.replace(/\s+/g, '_');
+          let count = parseInt(localStorage.getItem(aksesKey)) || 0;
+          if (count >= trialLimit) {
+            alert("⚠️ Akses trial untuk fitur ini sudah habis. Silakan upgrade ke versi premium di lynk.id/bangunku.");
+            return;
+          }
+          localStorage.setItem(aksesKey, count + 1);
         }
-        localStorage.setItem(aksesKey, count + 1);
 
         if (pageMap[item]) {
           window.location.href = pageMap[item];
