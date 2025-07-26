@@ -1,117 +1,117 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Perhitungan Bata Merah - Bangunku</title>
-<style>
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    max-width: 480px;
-    margin: 20px auto;
-    padding: 15px;
-    background: #f7f9fb;
-    color: #333;
-  }
-  h1 {
-    text-align: center;
-    font-weight: 700;
-    color: #1a2a45;
-    margin-bottom: 25px;
-  }
-  label {
-    display: block;
-    margin: 12px 0 6px;
-    font-weight: 600;
-  }
-  input[type="number"] {
-    width: 100%;
-    padding: 8px 10px;
-    font-size: 1rem;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-  }
-  .info {
-    font-style: italic;
-    font-size: 0.85rem;
-    color: #666;
-    margin-bottom: 18px;
-  }
-  .flex-row {
-    display: flex;
-    gap: 10px;
-    flex-wrap: nowrap;
-    align-items: center;
-  }
-  .flex-row > div {
-    flex: 1;
-  }
-  .results {
-    margin-top: 25px;
-    background: white;
-    border-radius: 12px;
-    padding: 15px 20px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.1);
-    font-weight: 600;
-    font-size: 1.1rem;
-  }
-  .results span {
-    color: #2980b9;
-  }
-  .lobang-group {
-    margin-bottom: 12px;
-    position: relative;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-  }
-  .lobang-group input {
-    flex: 1;
-    padding: 8px 10px;
-    font-size: 1rem;
-  }
-  .lobang-group label {
-    flex: 0 0 60px;
-    font-weight: 600;
-  }
-  .btn-remove {
-    background: transparent;
-    border: none;
-    color: #e74c3c;
-    font-weight: 700;
-    font-size: 1.4rem;
-    cursor: pointer;
-    padding: 0 6px;
-    line-height: 1;
-    user-select: none;
-    transition: color 0.2s ease;
-  }
-  .btn-remove:hover {
-    color: #c0392b;
-  }
-  .btn-add {
-    background-color: #27ae60;
-    font-weight: 700;
-    color: white;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-bottom: 18px;
-  }
-  .btn-add:hover {
-    background-color: #1e8449;
-  }
-  .standar-ukuran {
-    font-size: 0.9rem;
-    margin-bottom: 18px;
-    background: #dceefb;
-    padding: 10px;
-    border-radius: 8px;
-    color: #1a2a45;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Perhitungan Bata Merah - Bangunku</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 480px;
+      margin: 20px auto;
+      padding: 15px;
+      background: #f7f9fb;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      font-weight: 700;
+      color: #1a2a45;
+      margin-bottom: 25px;
+    }
+    label {
+      display: block;
+      margin: 12px 0 6px;
+      font-weight: 600;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 8px 10px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    .info {
+      font-style: italic;
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 18px;
+    }
+    .flex-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: nowrap;
+      align-items: center;
+    }
+    .flex-row > div {
+      flex: 1;
+    }
+    .results {
+      margin-top: 25px;
+      background: white;
+      border-radius: 12px;
+      padding: 15px 20px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    .results span {
+      color: #2980b9;
+    }
+    .lobang-group {
+      margin-bottom: 12px;
+      position: relative;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .lobang-group input {
+      flex: 1;
+      padding: 8px 10px;
+      font-size: 1rem;
+    }
+    .lobang-group label {
+      flex: 0 0 60px;
+      font-weight: 600;
+    }
+    .btn-remove {
+      background: transparent;
+      border: none;
+      color: #e74c3c;
+      font-weight: 700;
+      font-size: 1.4rem;
+      cursor: pointer;
+      padding: 0 6px;
+      line-height: 1;
+      user-select: none;
+      transition: color 0.2s ease;
+    }
+    .btn-remove:hover {
+      color: #c0392b;
+    }
+    .btn-add {
+      background-color: #27ae60;
+      font-weight: 700;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-bottom: 18px;
+    }
+    .btn-add:hover {
+      background-color: #1e8449;
+    }
+    .standar-ukuran {
+      font-size: 0.9rem;
+      margin-bottom: 18px;
+      background: #dceefb;
+      padding: 10px;
+      border-radius: 8px;
+      color: #1a2a45;
+    }
+  </style>
 </head>
 <body>
 
@@ -128,8 +128,11 @@
 <label for="bataTinggi">Tinggi Bata (cm)</label>
 <input type="number" id="bataTinggi" min="3" max="15" step="0.1" value="5" />
 
-<label for="bataTebal">Tebal Adukan (cm)</label>
-<input type="number" id="bataTebal" min="1" max="10" step="0.1" value="7" />
+<label for="bataTebal">Tebal Bata (cm)</label>
+<input type="number" id="bataTebal" min="3" max="15" step="0.1" value="7" />
+
+<label for="tebalNat">Tebal Nat Adukan (cm)</label>
+<input type="number" id="tebalNat" min="0.5" max="5" step="0.1" value="1.5" />
 
 <hr/>
 
@@ -160,8 +163,8 @@
 <div class="info">
   * Note: Perbandingan adukan semen dan pasir adalah 1 : 4 (standar proyek).<br/>
   * Tebal adukan yang umum adalah 1-2 cm.<br/>
-  * 1 sak semen = 50 kg.<br/>
-  * 1 m³ pasir = 1 kubik pasir (sesuai input)<br/>
+  * 1 sak semen = 50 kg (~0.035 m³).<br/>
+  * 1 m³ pasir = 1 kubik pasir.
 </div>
 
 <button id="btnReset">Reset Semua</button>
@@ -190,51 +193,63 @@
   function hitung() {
     const panjangBata = parseFloat(document.getElementById('bataPanjang').value);
     const tinggiBata = parseFloat(document.getElementById('bataTinggi').value);
-    const tebalAdukan = parseFloat(document.getElementById('bataTebal').value);
+    const tebalBata = parseFloat(document.getElementById('bataTebal').value);
+    const tebalNat = parseFloat(document.getElementById('tebalNat').value);
     const panjangDinding = parseFloat(document.getElementById('dindingPanjang').value);
     const tinggiDinding = parseFloat(document.getElementById('dindingTinggi').value);
     const luasLobang = getTotalLobang();
 
-    if([panjangBata, tinggiBata, tebalAdukan, panjangDinding, tinggiDinding].some(v => isNaN(v))) {
+    if ([panjangBata, tinggiBata, tebalBata, tebalNat, panjangDinding, tinggiDinding].some(v => isNaN(v))) {
       document.getElementById('results').style.display = 'none';
       return;
     }
 
-    if(panjangDinding <= 0 || tinggiDinding <= 0) {
+    if (panjangDinding <= 0 || tinggiDinding <= 0) {
       document.getElementById('results').style.display = 'none';
       return;
     }
 
+    // Luas dinding total
     const luasDinding = panjangDinding * tinggiDinding;
+    // Luas efektif (dikurangi lubang)
     const luasEfektif = Math.max(0, luasDinding - luasLobang);
 
-    // Luas bata termasuk adukan (panjang+tebal) x (tinggi+tebal) cm, ke m²
-    const luasSatuanBataM2 = ((panjangBata + tebalAdukan)/100) * ((tinggiBata + tebalAdukan)/100);
-    const jumlahBata = Math.ceil(luasEfektif / luasSatuanBataM2);
+    // Luas bata + nat
+    const luasEfektifBata = ((panjangBata + tebalNat) / 100) * ((tinggiBata + tebalNat) / 100);
 
-    const tebalM = tebalAdukan / 100;
-    const volumeDinding = luasEfektif * tebalM;
-    const volumeBata = jumlahBata * (panjangBata/100) * (tinggiBata/100) * tebalM;
-    let volumeAdukan = volumeDinding - volumeBata;
-    if(volumeAdukan < 0) volumeAdukan = 0;
+    // Jumlah bata
+    const jumlahBata = Math.ceil(luasEfektif / luasEfektifBata);
 
-    // Perbandingan semen : pasir = 1 : 4 (volume)
-    const volumeSemen = volumeAdukan / 5;  // semen 1 bagian dari total 5
-    const volumePasir = volumeAdukan * 4 / 5; // pasir 4 bagian dari total 5
+    // Volume adukan (nat) dalam m³
+    const volumeAdukan = luasEfektif * (tebalNat / 100);
 
-    // Berat semen = volume semen x 1440 kg/m³ (density semen)
-    const beratSemen = volumeSemen * 1440;
+    // Rasio semen : pasir = 1 : 4
+    const rasioSemen = 1;
+    const rasioPasir = 4;
+    const totalRasio = rasioSemen + rasioPasir;
 
-    // Jumlah sak semen (1 sak = 50 kg)
-    const jumlahSakSemen = beratSemen / 50;
+    // Hitung volume semen dan pasir (m³)
+    let volumeSemen = volumeAdukan * (rasioSemen / totalRasio);
+    let volumePasir = volumeAdukan * (rasioPasir / totalRasio);
 
+    // Tambahkan faktor waste 15%
+    const faktorWaste = 1.15;
+    volumeSemen *= faktorWaste;
+    volumePasir *= faktorWaste;
+
+    // Konversi volume semen ke sak (1 sak = 0.035 m³)
+    const volumePerSak = 0.035;
+    const jumlahSakSemen = Math.ceil(volumeSemen / volumePerSak);
+
+    // Tampilkan hasil
     document.getElementById('jumlahBata').textContent = jumlahBata.toLocaleString();
-    document.getElementById('jumlahSemen').textContent = jumlahSakSemen.toFixed(2);
+    document.getElementById('jumlahSemen').textContent = jumlahSakSemen;
     document.getElementById('jumlahPasir').textContent = volumePasir.toFixed(3);
 
     document.getElementById('results').style.display = 'block';
   }
 
+  // Fungsi tambah input lubang pintu/jendela
   function tambahLobang() {
     const container = document.getElementById('lobangContainer');
     const div = document.createElement('div');
@@ -277,8 +292,6 @@
     container.appendChild(div);
 
     updateRemoveButtons();
-
-    // update hasil otomatis saat input lobang berubah
     inputP.addEventListener('input', hitung);
     inputT.addEventListener('input', hitung);
   }
@@ -287,11 +300,7 @@
     const lobangGroups = document.querySelectorAll('.lobang-group');
     lobangGroups.forEach((div, idx) => {
       const btn = div.querySelector('.btn-remove');
-      if(lobangGroups.length <= 1) {
-        btn.style.display = 'none';
-      } else {
-        btn.style.display = 'inline';
-      }
+      btn.style.display = lobangGroups.length <= 1 ? 'none' : 'inline';
     });
   }
 
@@ -299,6 +308,7 @@
     document.getElementById('bataPanjang').value = 20;
     document.getElementById('bataTinggi').value = 5;
     document.getElementById('bataTebal').value = 7;
+    document.getElementById('tebalNat').value = 1.5;
     document.getElementById('dindingPanjang').value = '';
     document.getElementById('dindingTinggi').value = '';
     const container = document.getElementById('lobangContainer');
@@ -307,7 +317,7 @@
     document.getElementById('results').style.display = 'none';
   }
 
-  ['bataPanjang','bataTinggi','bataTebal','dindingPanjang','dindingTinggi'].forEach(id => {
+  ['bataPanjang','bataTinggi','bataTebal','tebalNat','dindingPanjang','dindingTinggi'].forEach(id => {
     document.getElementById(id).addEventListener('input', hitung);
   });
 
