@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Perhitungan Atap Baja Ringan & Kanopi</title>
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      max-width: 480px;
+      margin: 20px auto;
+      background: #f5f5f5;
+      padding: 20px;
+      color: #333;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: #004085;
+    }
+    form {
+      background: white;
+      padding: 18px 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: 600;
+      font-size: 13px;
+      color: #222;
+    }
+    input[type="number"], select {
+      width: 100%;
+      padding: 7px 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-top: 4px;
+      box-sizing: border-box;
+      font-size: 13px;
+    }
+    button {
+      margin-top: 18px;
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 11px;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 6px;
+      width: 100%;
+      font-weight: 700;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    #hasil {
+      margin-top: 20px;
+      background: #e8f0fe;
+      padding: 15px 18px;
+      border-radius: 6px;
+      font-size: 13px;
+      display: none;
+      color: #004085;
+    }
+    .note-box {
+      background: #d9edf7;
+      border-left: 4px solid #31708f;
+      padding: 10px 12px;
+      font-size: 12px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      color: #31708f;
+      line-height: 1.3;
+    }
+  </style>
+</head>
+<body>
+  <h2>Perhitungan Atap Baja Ringan & Kanopi</h2>
+  <div class="note-box">
+    <strong>Catatan Sudut Kemiringan Atap:</strong>
+    <ul>
+      <li><em>Tinggi (&gt;30°):</em> Air cepat turun, minim bocor, biaya lebih tinggi, tapi rawan angin.</li>
+      <li><em>Landai (&lt;20°):</em> Struktur sederhana dan murah, rawan genangan air.</li>
+      <li><strong>Saran:</strong> Ideal 25°–30°.</li>
+    </ul>
+    <p style="margin-top:8px;">
+      <em>Perhitungan menggunakan rumus umum dan asumsi standar.<br/>
+      Mohon dicek dan disesuaikan dengan kondisi lapangan sebenarnya.</em>
+    </p>
+  </div>
+
+  <form id="formAtap">
+    <label>Bentuk Atap</label>
+    <label><input type="radio" name="bentuk" value="segitiga" checked /> Segitiga (Rumah)</label>
+    <label><input type="radio" name="bentuk" value="kanopi" /> Kanopi</label>
+
+    <div id="inputTinggiKuda" style="margin-top:10px;">
+      <label>Tinggi Kuda-Kuda (m)</label>
+      <input type="number" id="tinggiKuda" value="1.5" min="0.1" step="0.01" />
+      <div id="infoSudutKuda" style="font-size:12px; margin-top:4px; color:#555;"></div>
+    </div>
+
+    <label style="margin-top:15px;">Panjang Bangunan (m)</label>
+    <input type="number" id="panjang" value="10" min="0.1" step="0.01" />
+    <label>Lebar Bangunan (m)</label>
+    <input type="number" id="lebar" value="6" min="0.1" step="0.01" />
+
+    <label>Jenis Penutup Atap</label>
+    <select id="jenisAtap">
+      <option value="spandek">Spandek / Galvalum (Lebar efektif 0.8 m, panjang 6 m)</option>
+      <option value="asbes">Asbes / Fiber (Lebar efektif 1.0 m, panjang 3–4 m)</option>
+      <option value="alderon">Alderon / PVC (Lebar efektif 1.05 m, panjang 2.1 m)</option>
+      <option value="genteng">Genteng Galvanum kecil (Ukuran ~0.33 m x 1 m)</option>
+    </select>
+
+    <label style="margin-top:15px;">
+      <input type="checkbox" id="pakaiReng" checked /> Gunakan Reng
+    </label>
+    <label>Jarak Reng (cm)</label>
+    <input type="number" id="jarakReng" value="60" min="10" step="1" />
+
+    <label>Jarak Antar Rangka U-Channel (cm)</label>
+    <input type="number" id="jarakUChannel" value="80" min="10" step="1" />
+
+    <div style="font-size: 12px; color:#555; margin-top:6px; margin-bottom:12px;">
+      Saran jarak antar rangka: 80 cm (cukup kuat untuk bentang atap &lt; 4 m)
+    </div>
+
+    <button type="submit">Hitung</button>
+  </form>
+
+  <div id="hasil"></div>
+
+  <script>
+    function toRad(deg) {
+      return deg * Math.PI / 180;
+    }
+
+    function hitungSudutKemiringan(tinggi, lebar) {
+      return Math.atan((2 * tinggi) / lebar) * 180 / Math.PI;
+    }
+
+    function toggleInputKuda() {
+      const bentuk = document.querySelector('input[name="bentuk"]:checked').value;
+      const inputTinggi = document.getElementById('inputTinggiKuda');
+      if (bentuk === 'segitiga') {
+        inputTinggi.style.display = 'block';
+      } else {
+        inputTinggi.style.display = 'none';
+        document.getElementById('infoSudutKuda').textContent = '';
+      }
+    }
+
+    function updateSudutKuda() {
+      const tinggi = parseFloat(document.getElementById('tinggiKuda').value);
+      const lebar = parseFloat(document.getElementById('lebar').value);
+      if (tinggi > 0 && lebar > 0) {
+        const sudut = hitungSudutKemiringan(tinggi, lebar);
+        document.getElementById('infoSudutKuda').textContent = `Sudut kemiringan atap sekitar: ${sudut.toFixed(1)}°`;
+      } else {
+        document.getElementById('infoSudutKuda').textContent = '';
+      }
+    }
+
+    function hitungUChannelOptimasi(panjang, lebar, jarakCm, pakaiReng) {
+      const jarak = jarakCm / 100;
+      const panjangBatang = 6;
+
+      const jumlahMelintangLebar = Math.ceil(panjang / jarak) + 1;
+      const jumlahMelintangPanjang = pakaiReng ? 0 : Math.ceil(lebar / jarak) + 1;
+
+      let sisaBatangArr = [];
+      function pakaiSisa(panjangButuh) {
+        for (let i = 0; i < sisaBatangArr.length; i++) {
+          if (sisaBatangArr[i] >= panjangButuh) {
+            sisaBatangArr[i] -= panjangButuh;
+            if (sisaBatangArr[i] < 0.1) sisaBatangArr.splice(i, 1);
+            return true;
+          }
+        }
+        return false;
+      }
+
+      let batangDipakai = 0;
+
+      const kelilingPieces = [panjang, panjang, lebar, lebar];
+      kelilingPieces.forEach(panjangBagian => {
+        if (!pakaiSisa(panjangBagian)) {
+          batangDipakai++;
+          const sisa = panjangBatang - panjangBagian;
+          if (sisa > 0.1) sisaBatangArr.push(sisa);
+        }
+      });
+
+      for (let i = 0; i < jumlahMelintangPanjang; i++) {
+        if (!pakaiSisa(panjang)) {
+          batangDipakai++;
+          const sisa = panjangBatang - panjang;
+          if (sisa > 0.1) sisaBatangArr.push(sisa);
+        }
+      }
+
+      for (let i = 0; i < jumlahMelintangLebar; i++) {
+        if (!pakaiSisa(lebar)) {
+          batangDipakai++;
+          const sisa = panjangBatang - lebar;
+          if (sisa > 0.1) sisaBatangArr.push(sisa);
+        }
+      }
+
+      const totalPanjang = 2 * (panjang + lebar) +
+        (pakaiReng ? 0 : jumlahMelintangPanjang * panjang) +
+        jumlahMelintangLebar * lebar;
+
+      return { totalPanjang, batangDipakai };
+    }
+
+    function clearHasil() {
+      const hasil = document.getElementById('hasil');
+      hasil.style.display = 'none';
+      hasil.innerHTML = '';
+    }
+
+    document.querySelectorAll('input[name="bentuk"]').forEach(el => {
+      el.addEventListener('change', () => {
+        toggleInputKuda();
+        clearHasil();
+        updateSudutKuda();
+      });
+    });
+
+    document.getElementById('tinggiKuda').addEventListener('input', () => {
+      updateSudutKuda();
+      clearHasil();
+    });
+
+    document.getElementById('lebar').addEventListener('input', () => {
+      updateSudutKuda();
+      clearHasil();
+    });
+
+    document.getElementById('formAtap').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const bentuk = document.querySelector('input[name="bentuk"]:checked').value;
+      const panjang = parseFloat(document.getElementById('panjang').value);
+      const lebar = parseFloat(document.getElementById('lebar').value);
+      const jenisAtap = document.getElementById('jenisAtap').value;
+      const pakaiReng = document.getElementById('pakaiReng').checked;
+      const jarakReng = parseFloat(document.getElementById('jarakReng').value);
+      const jarakU = parseFloat(document.getElementById('jarakUChannel').value);
+
+      if ([panjang, lebar, jarakU].some(v => isNaN(v) || v <= 0)) {
+        alert("Pastikan semua nilai diisi dengan benar!");
+        return;
+      }
+      if (pakaiReng && (isNaN(jarakReng) || jarakReng <= 0)) {
+        alert("Jarak reng harus diisi dengan nilai valid!");
+        return;
+      }
+
+      let tinggiKuda = 0;
+      let sudut = 0;
+      let sisiMiring = 0;
+
+      if (bentuk === 'segitiga') {
+        tinggiKuda = parseFloat(document.getElementById('tinggiKuda').value);
+        if (isNaN(tinggiKuda) || tinggiKuda <= 0) {
+          alert("Tinggi kuda-kuda harus valid!");
+          return;
+        }
+        sudut = hitungSudutKemiringan(tinggiKuda, lebar);
+        sisiMiring = Math.sqrt(Math.pow(lebar / 2, 2) + Math.pow(tinggiKuda, 2));
+        sisiMiring *= 2;
+      } else {
+        sisiMiring = lebar;
+        sudut = 0;
+      }
+
+      const overlap = 0.5;
+      const panjangEfektif = panjang + overlap * 2;
+      const sisiMiringEfektif = sisiMiring + overlap * 2;
+
+      let lebarEfektif = 1;
+      let panjangLembar = 1;
+
+if (jenisAtap === 'spandek') {
+        lebarEfektif = 0.8;
+        panjangLembar = 6;
+      } else if (jenisAtap === 'asbes') {
+        lebarEfektif = 1.0;
+        panjangLembar = 4;
+      } else if (jenisAtap === 'alderon') {
+        lebarEfektif = 1.05;
+        panjangLembar = 2.1;
+      } else if (jenisAtap === 'genteng') {
+        lebarEfektif = 0.33;
+        panjangLembar = 1.0;
+      }
+
+      const jmlLembarMelintang = Math.ceil(sisiMiringEfektif / panjangLembar);
+      const jmlLembarBerjajar = Math.ceil(panjangEfektif / lebarEfektif);
+      const totalLembar = jmlLembarMelintang * jmlLembarBerjajar;
+
+      const kebutuhanU = hitungUChannelOptimasi(sisiMiringEfektif, panjangEfektif, jarakU, pakaiReng);
+
+      let rengInfo = '';
+      if (pakaiReng) {
+        const jumlahReng = Math.ceil(sisiMiringEfektif / (jarakReng / 100));
+        rengInfo = `<p>Kebutuhan reng: ${jumlahReng} batang sepanjang ${panjangEfektif.toFixed(2)} m</p>`;
+      } else {
+        rengInfo = `<p><em>Tidak menggunakan reng. U-channel melintang akan lebih banyak.</em></p>`;
+      }
+
+      const hasilHTML = `
+        <p><strong>Bentuk atap:</strong> ${bentuk === 'segitiga' ? 'Segitiga (Rumah)' : 'Kanopi'}</p>
+        <p><strong>Tinggi kuda-kuda:</strong> ${bentuk === 'segitiga' ? tinggiKuda + ' m' : '-'}</p>
+        <p><strong>Sudut kemiringan atap:</strong> ${sudut.toFixed(1)}°</p>
+        <p><strong>Luas atap efektif (termasuk overlap keliling 0.5m):</strong> ${(sisiMiringEfektif * panjangEfektif).toFixed(2)} m²</p>
+        <p><strong>Jenis bahan atap:</strong> ${jenisAtap.toUpperCase()}</p>
+        <p><strong>Ukuran lembar bahan:</strong> ${panjangLembar} m (panjang) x ${lebarEfektif} m (lebar)</p>
+        <p><strong>Jumlah lembar bahan yang dibutuhkan:</strong> ${totalLembar} lembar</p>
+        <p><strong>Total panjang rangka U-Channel teoritis:</strong> ${kebutuhanU.totalPanjang.toFixed(2)} m</p>
+        <p><strong>Kebutuhan batang U-Channel 6m (setelah optimasi):</strong> ${kebutuhanU.batangDipakai} batang</p>
+        ${rengInfo}
+        <hr/>
+        <p style="font-size:13px; color:#555;"><strong>Catatan tambahan:</strong><br/>
+        - Pemasangan atap (Spandek/Asbes/Alderon) dilakukan dengan arah panjang lembaran mengikuti <u>lebar bangunan</u> (melintang), dan lembaran berjajar sepanjang <u>panjang bangunan</u>.<br/>
+        - Genteng tidak mengikuti prinsip tersebut karena dipasang bertumpuk.<br/>
+        - Overlap keliling 0.5 m sudah dihitung otomatis.<br/>
+        - Sistem optimasi batang hanya berlaku untuk U-Channel dan Reng.<br/>
+        - Jumlah lembar atap diasumsikan tidak disambung untuk efisiensi dan kekedapan.<br/>
+        </p>
+      `;
+
+      const hasil = document.getElementById('hasil');
+      hasil.innerHTML = hasilHTML;
+      hasil.style.display = 'block';
+    });
+
+    // Initialize input form
+    toggleInputKuda();
+    updateSudutKuda();
+  </script>
+</body>
+</html>
