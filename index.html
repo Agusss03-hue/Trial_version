@@ -221,14 +221,27 @@ document.addEventListener('DOMContentLoaded', function () {
       li.textContent = item;
       li.tabIndex = 0;
       li.onclick = () => {
-        if (fitur === "Perhitungan RAB") {
-          alert("⚠️ Fitur ini tersedia pada versi penuh aplikasi. Untuk akses lengkap, silakan upgrade ke versi premium di lynk.id/bangunku. Terima kasih atas dukungan Anda.");
+        if(fitur === "Perhitungan RAB") {
+          // Langsung blokir akses dan minta upgrade
+          alert("⚠️ Fitur ini tersedia hanya di versi premium. Silakan kunjungi lynk.id/bangunku untuk upgrade. Terima kasih!");
+          return;
+        }
+
+        // Batasi akses trial maksimal 2 kali per submenu Perhitungan Bahan
+        const trialLimit = 2;
+        const aksesKey = 'akses_' + item.replace(/\s+/g, '_');
+
+        let count = parseInt(localStorage.getItem(aksesKey)) || 0;
+        if (count >= trialLimit) {
+          alert("⚠️ Akses trial untuk fitur ini sudah habis. Silakan upgrade ke versi premium di lynk.id/bangunku.");
+          return;
+        }
+        localStorage.setItem(aksesKey, count + 1);
+
+        if (pageMap[item]) {
+          window.location.href = pageMap[item];
         } else {
-          if (pageMap[item]) {
-            window.location.href = pageMap[item];
-          } else {
-            alert(`Halaman untuk '${item}' belum tersedia.`);
-          }
+          alert(`Halaman untuk '${item}' belum tersedia.`);
         }
       };
       li.onkeydown = (event) => {
