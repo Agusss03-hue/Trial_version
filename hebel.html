@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Perhitungan Hebel Dinamis - Mortar 3mm</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 0 15px;
+    background: #fafafa;
+    color: #222;
+  }
+  h1 {
+    color: #007acc;
+    text-align: center;
+    margin-bottom: 25px;
+  }
+  label {
+    display: block;
+    margin: 8px 0 4px;
+    font-weight: 600;
+  }
+  input[type="number"] {
+    width: 100%;
+    padding: 6px 10px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  button {
+    background: #007acc;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    margin: 10px 0;
+    width: 100%;
+  }
+  button:hover {
+    background: #005fa3;
+  }
+  .side, .lobang-group {
+    border: 1px solid #007acc;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    background: #e6f2ff;
+  }
+  .lobang-group {
+    background: #f0f8ff;
+    margin-top: 10px;
+  }
+  .output {
+    margin-top: 25px;
+    background: #e6f2ff;
+    padding: 15px;
+    border-radius: 6px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    border: 1px solid #99c2ff;
+    padding: 8px 12px;
+    text-align: left;
+  }
+  .note {
+    margin-top: 25px;
+    padding: 12px 15px;
+    background-color: #f0f8ff;
+    border-left: 4px solid #007acc;
+    color: #333;
+    font-size: 0.95em;
+    line-height: 1.4em;
+  }
+  .note ul {
+    margin: 10px 0 0 20px;
+    padding: 0;
+  }
+  .note li {
+    margin-bottom: 6px;
+  }
+</style>
+</head>
+<body>
+<h1>Perhitungan Bahan Hebel Dinamis</h1>
+
+<div id="sides-container"></div>
+
+<button onclick="addSide()">Tambah Sisi Dinding</button>
+
+<label for="ketebalan-mortar">Ketebalan Mortar (mm):</label>
+<input type="number" id="ketebalan-mortar" min="1" max="10" step="0.1" value="3" />
+
+<button onclick="hitung()">Hitung Kebutuhan</button>
+
+<div id="hasil" class="output" style="display:none;"></div>
+
+<div class="note">
+  <h4>📌 Catatan Tambahan</h4>
+  <ul>
+    <li>Ukuran hebel yang digunakan adalah <strong>60 cm x 20 cm x 7.5 cm</strong> (0,12 m² permukaan).</li>
+    <li>Jumlah yang dihitung belum termasuk potongan dan sisa material.</li>
+    <li>Kebutuhan mortar bersifat estimasi dan dapat berbeda tergantung merk dan kondisi pemasangan.</li>
+    <li>Luas dinding sudah dikurangi total luas lobang jendela, pintu, dan ventilasi.</li>
+    <li>Estimasi konsumsi mortar berdasarkan ketebalan mortar yang diinput.</li>
+    <li>1 sak mortar = 40 kg.</li>
+  </ul>
+</div>
+
+<script>
+let sideCount = 0;
+
+function addSide() {
+  sideCount++;
+  const container = document.getElementById('sides-container');
+
+  const sideDiv = document.createElement('div');
+  sideDiv.className = 'side';
+  sideDiv.id = 'side-' + sideCount;
+
+  sideDiv.innerHTML = `
+    <h3>Sisi Dinding ${sideCount}</h3>
+    <label>Panjang (m):</label>
+    <input type="number" min="0" step="0.01" class="panjang" value="5" required>
+    <label>Tinggi (m):</label>
+    <input type="number" min="0" step="0.01" class="tinggi" value="2.8" required>
+
+    <div>
+      <label><input type="checkbox" class="has-pintu" onchange="toggleLobang(this, 'pintu', ${sideCount})"> Ada Pintu</label>
+      <div class="lobang-group" id="pintu-group-${sideCount}" style="display:none;">
+        <label>Panjang Pintu (m):</label>
+        <input type="number" min="0" step="0.01" class="pintu-panjang" value="1" >
+        <label>Tinggi Pintu (m):</label>
+        <input type="number" min="0" step="0.01" class="pintu-tinggi" value="2" >
+      </div>
+    </div>
+
+    <div>
+      <label><input type="checkbox" class="has-jendela" onchange="toggleLobang(this, 'jendela', ${sideCount})"> Ada Jendela</label>
+      <div class="lobang-group" id="jendela-group-${sideCount}" style="display:none;">
+        <label>Panjang Jendela (m):</label>
+        <input type="number" min="0" step="0.01" class="jendela-panjang" value="1" >
+        <label>Tinggi Jendela (m):</label>
+        <input type="number" min="0" step="0.01" class="jendela-tinggi" value="1" >
+      </div>
+    </div>
+
+    <div>
+      <label><input type="checkbox" class="has-ventilasi" onchange="toggleLobang(this, 'ventilasi', ${sideCount})"> Ada Ventilasi</label>
+      <div class="lobang-group" id="ventilasi-group-${sideCount}" style="display:none;">
+        <label>Panjang Ventilasi (m):</label>
+        <input type="number" min="0" step="0.01" class="ventilasi-panjang" value="0.5" >
+        <label>Tinggi Ventilasi (m):</label>
+        <input type="number" min="0" step="0.01" class="ventilasi-tinggi" value="0.5" >
+      </div>
+    </div>
+  `;
+
+  container.appendChild(sideDiv);
+}
+
+function toggleLobang(checkbox, type, sideNum) {
+  const group = document.getElementById(type + '-group-' + sideNum);
+  group.style.display = checkbox.checked ? 'block' : 'none';
+}
+
+function hitung() {
+  let luasTotalDinding = 0;
+  let luasTotalLobang = 0;
+  const luasHebel = 0.6 * 0.2; // 0.12 m2
+  const ketebalanInput = parseFloat(document.getElementById('ketebalan-mortar').value);
+  // Perkiraan konsumsi mortar per m2 berdasarkan ketebalan (linear asumsi 3mm = 3.5 kg/m2)
+  const mortarPerM2 = (ketebalanInput / 3) * 3.5;
+
+  for(let i=1; i<=sideCount; i++) {
+    const sideDiv = document.getElementById('side-' + i);
+    if(!sideDiv) continue;
+
+    const panjang = parseFloat(sideDiv.querySelector('.panjang').value) || 0;
+    const tinggi = parseFloat(sideDiv.querySelector('.tinggi').value) || 0;
+
+    const luasDinding = panjang * tinggi;
+    luasTotalDinding += luasDinding;
+
+    // Hitung lobang pintu
+    let luasPintu = 0;
+    if(sideDiv.querySelector('.has-pintu').checked) {
+      const pPanjang = parseFloat(sideDiv.querySelector('.pintu-panjang').value) || 0;
+      const pTinggi = parseFloat(sideDiv.querySelector('.pintu-tinggi').value) || 0;
+      luasPintu = pPanjang * pTinggi;
+    }
+
+    // Hitung lobang jendela
+    let luasJendela = 0;
+    if(sideDiv.querySelector('.has-jendela').checked) {
+      const jPanjang = parseFloat(sideDiv.querySelector('.jendela-panjang').value) || 0;
+      const jTinggi = parseFloat(sideDiv.querySelector('.jendela-tinggi').value) || 0;
+      luasJendela = jPanjang * jTinggi;
+    }
+
+    // Hitung lobang ventilasi
+    let luasVentilasi = 0;
+    if(sideDiv.querySelector('.has-ventilasi').checked) {
+      const vPanjang = parseFloat(sideDiv.querySelector('.ventilasi-panjang').value) || 0;
+      const vTinggi = parseFloat(sideDiv.querySelector('.ventilasi-tinggi').value) || 0;
+      luasVentilasi = vPanjang * vTinggi;
+    }
+
+    luasTotalLobang += (luasPintu + luasJendela + luasVentilasi);
+  }
+
+  const luasDindingBersih = luasTotalDinding - luasTotalLobang;
+  const jumlahHebel = luasDindingBersih / luasHebel;
+  const kebutuhanMortar = luasDindingBersih * mortarPerM2;
+  const sakMortar = kebutuhanMortar / 40;
+
+  const hasilEl = document.getElementById('hasil');
+  hasilEl.style.display = 'block';
+  hasilEl.innerHTML = `
+    <h3>Hasil Perhitungan:</h3>
+    <table>
+      <tr><th>Deskripsi</th><th>Jumlah</th></tr>
+      <tr><td>Luas Total Dinding</td><td>${luasTotalDinding.toFixed(2)} m²</td></tr>
+      <tr><td>Total Luas Lobang (Pintu, Jendela, Ventilasi)</td><td>${luasTotalLobang.toFixed(2)} m²</td></tr>
+      <tr><td>Luas Dinding Bersih</td><td>${luasDindingBersih.toFixed(2)} m²</td></tr>
+      <tr><td>Jumlah Hebel Dibutuhkan</td><td>${Math.ceil(jumlahHebel)} buah</td></tr>
+   <tr><td>Estimasi Kebutuhan Mortar</td><td>${kebutuhanMortar.toFixed(2)} kg</td></tr>
+      <tr><td>Perkiraan Jumlah Sak Mortar (40 kg/sak)</td><td>${Math.ceil(sakMortar)} sak</td></tr>
+    </table>
+  `;
+}
+  
+// Inisialisasi 1 sisi default saat halaman dibuka
+addSide();
+</script>
+</body>
+</html>
